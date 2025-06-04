@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spot the Phishing</title>
+    <style>
+        :root {
+            --ms-blue: #0078d4;
+            --ms-blue-dark: #005a9e;
+            --ms-gray-light: #f3f2f1;
+            --ms-gray: #d1d1d1;
+            --ms-white: #ffffff;
+            font-size: 20px; /* Increased base font size by 25% from 16px */
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--ms-gray-light);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        #app {
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: var(--ms-white);
+            border: 1px solid var(--ms-gray);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #app::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--ms-blue), #2b88d8);
+        }
+
+        #email-container {
+            padding: 10px 10px 0 10px;
+        }
+
+        #email-header {
+            background-color: var(--ms-white);
+            color: #222;
+            padding: 12px 10px 8px 10px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            border-bottom: 1px solid var(--ms-gray);
+            position: relative;
+        }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--ms-blue) 60%, #2b88d8 100%);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+            flex-shrink: 0;
+        }
+        .header-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .sender-name {
+            font-weight: 600;
+            font-size: 1.2em;
+            color: #222;
+        }
+        .sender-email {
+            font-size: 1em;
+            color: #666;
+            margin-left: 4px;
+        }
+        .subject {
+            font-weight: 600;
+            font-size: 1.15em;
+            margin: 4px 0 0 0;
+            color: #222;
+        }
+        /* Pulse animation for inspectable elements */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0,120,212,0.3); }
+            70% { box-shadow: 0 0 0 8px rgba(0,120,212,0); }
+            100% { box-shadow: 0 0 0 0 rgba(0,120,212,0); }
+        }
+        .pulse {
+            animation: pulse 1.2s infinite;
+        }
+
+        #email-body {
+            padding: 14px 10px;
+            background-color: var(--ms-white);
+            border: 1px solid var(--ms-gray);
+            border-top: none;
+            border-radius: 0 0 6px 6px;
+            min-height: 120px;
+            font-size: 1em;
+        }
+
+        #inspection-area {
+            margin: 10px;
+            padding: 10px;
+            background-color: var(--ms-gray-light);
+            border: 1px solid var(--ms-gray);
+            border-radius: 6px;
+            min-height: 40px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        #inspection-area:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        #answer-buttons {
+            margin: 10px;
+            text-align: center;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        #answer-buttons button {
+            padding: 10px 0;
+            background-color: var(--ms-blue);
+            color: var(--ms-white);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+            max-width: 160px;
+        }
+
+        #answer-buttons button:hover:not(:disabled) {
+            background-color: var(--ms-blue-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        #answer-buttons button:disabled {
+            background-color: var(--ms-gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #feedback {
+            margin: 10px;
+            padding: 10px;
+            background-color: #fff8e1;
+            border-left: 4px solid #ff9800;
+            border-radius: 6px;
+            display: none;
+            font-size: 1em;
+        }
+
+        #feedback button {
+            padding: 8px 16px;
+            background-color: var(--ms-blue);
+            color: var(--ms-white);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+
+        #feedback button:hover {
+            background-color: var(--ms-blue-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .inspectable {
+            color: var(--ms-blue);
+            text-decoration: underline;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 1em;
+        }
+
+        .inspectable:hover {
+            color: var(--ms-blue-dark);
+            background-color: rgba(0,120,212,0.1);
+        }
+
+        @media (max-width: 600px) {
+            :root {
+                font-size: 18px;
+            }
+            #app {
+                margin: 0;
+                max-width: 100vw;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            #email-header {
+                border-radius: 0;
+                padding: 10px 6px 6px 6px;
+                gap: 8px;
+            }
+            #email-body {
+                border-radius: 0 0 6px 6px;
+                padding: 10px 6px;
+            }
+            #inspection-area, #feedback {
+                margin: 6px;
+                padding: 8px;
+            }
+            #answer-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+            #answer-buttons button {
+                width: 100%;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div id="email-container">
+            <div id="email-header">
+                <div class="avatar"></div>
+                <div class="header-info">
+                    <div class="sender-name"></div>
+                    <div class="sender-email"></div>
+                    <div class="subject"></div>
+                </div>
+            </div>
+            <div id="email-body"></div>
+        </div>
+        <div id="inspection-area">Click on underlined elements to inspect them.</div>
+        <div id="answer-buttons">
+            <button id="phishing-btn">Phishing</button>
+            <button id="legitimate-btn">Legitimate</button>
+        </div>
+        <div id="feedback" style="display:none;"></div>
+    </div>
+
+    <script>
+        const emails = [
+            {
+                sender: { name: "Microsoft Support", email: "support@micros0ft.com", hint: "Does the domain match Microsoft's official domain?" },
+                subject: "Urgent: Verify Your Account",
+                date: "2023-10-01",
+                body: "Dear user, we need to verify your account. Please click the link below to verify: <span class='inspectable' data-inspect='link-0'>Verify Now</span>",
+                links: [
+                    { display: "Verify Now", url: "http://micros0ft-security.com/verify", hint: "Check if the URL is legitimate. Look for misspellings." }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'micros0ft.com' uses a zero instead of an 'o'. Microsoft's official domain is 'microsoft.com'.",
+                    links: "The link points to 'micros0ft-security.com', a fake domain mimicking Microsoft's official site.",
+                    overall: "This email is a phishing attempt using a fake sender domain and a suspicious link to steal your information."
+                }
+            },
+            {
+                sender: { name: "Jane Smith", email: "jane.smith@yourcompany.com", hint: "Is this a known colleague?" },
+                subject: "Meeting Notes",
+                date: "2023-10-02",
+                body: "Hi, attached are the notes from our last meeting. Let me know if you have any questions.",
+                links: [],
+                attachments: [{ name: "meeting_notes.docx", type: "docx", hint: "Is this an expected attachment?" }],
+                isPhishing: false,
+                explanations: {
+                    sender: "The sender is a known colleague with a correct company email domain.",
+                    attachments: "The attachment is expected and from a trusted source, typical for meeting follow-ups.",
+                    overall: "This email is legitimate, coming from a known sender with appropriate content."
+                }
+            },
+            {
+                sender: { name: "IT Support", email: "support@yourcompany.co", hint: "Does the domain match your company's?" },
+                subject: "Password Reset Required",
+                date: "2023-10-03",
+                body: "Dear employee, due to a security breach, we need you to reset your password immediately. Click here: <span class='inspectable' data-inspect='link-0'>Reset Password</span>",
+                links: [
+                    { display: "Reset Password", url: "http://yourcompany-reset.com", hint: "Is this the official URL for password reset?" }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'yourcompany.co' is incorrect; the official company domain is 'yourcompany.com'.",
+                    links: "The link directs to 'yourcompany-reset.com', an external site, not the company's secure intranet.",
+                    overall: "This is a phishing email attempting to trick you into entering credentials on a fake site."
+                }
+            },
+            {
+                sender: { name: "HR Department", email: "hr@yourcompany.com", hint: "Is this the official HR email?" },
+                subject: "Company Picnic This Weekend",
+                date: "2023-10-04",
+                body: "Don't forget about the company picnic this Saturday! See you there.",
+                links: [],
+                attachments: [],
+                isPhishing: false,
+                explanations: {
+                    sender: "The sender uses the official HR email address, which is expected for company announcements.",
+                    overall: "This is a legitimate email with no suspicious elements, typical of internal communications."
+                }
+            },
+            {
+                sender: { name: "Unknown Sender", email: "unknown@example.com", hint: "Do you recognize this sender?" },
+                subject: "Invoice Attached",
+                date: "2023-10-05",
+                body: "Please find the invoice attached. Pay immediately to avoid penalties.",
+                links: [],
+                attachments: [{ name: "invoice.exe", type: "exe", hint: "Be cautious with executable files." }],
+                isPhishing: true,
+                explanations: {
+                    sender: "The sender is unknown and uses a generic email domain, not associated with any trusted entity.",
+                    attachments: "The attachment is an executable file (.exe), which is highly suspicious and often used to deliver malware.",
+                    overall: "This email is a phishing attempt or malware distribution, leveraging an urgent call to action and a dangerous attachment."
+                }
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let pulseTimeout;
+
+        function loadEmail(index) {
+            const email = emails[index];
+            // Set avatar initials
+            const initials = email.sender.name.split(' ').map(w => w[0]).join('').substring(0,2).toUpperCase();
+            document.querySelector('#email-header .avatar').textContent = initials;
+            // Set sender name and email
+            document.querySelector('#email-header .sender-name').innerHTML = `<span class="inspectable" data-inspect="sender">${email.sender.name}</span>`;
+            document.querySelector('#email-header .sender-email').innerHTML = `&lt;${email.sender.email}&gt;`;
+            // Set subject
+            document.querySelector('#email-header .subject').textContent = email.subject;
+            // Email body and rest
+            let bodyHtml = email.body;
+            if (email.attachments.length > 0) {
+                bodyHtml += '<div>Attachments: ';
+                email.attachments.forEach((att, i) => {
+                    bodyHtml += `<span class="inspectable" data-inspect="attachment-${i}">${att.name}</span> `;
+                });
+                bodyHtml += '</div>';
+            }
+            document.getElementById('email-body').innerHTML = bodyHtml;
+            document.getElementById('inspection-area').innerHTML = 'Click on underlined elements to inspect them.';
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('phishing-btn').disabled = false;
+            document.getElementById('legitimate-btn').disabled = false;
+            // Remove any previous pulse
+            document.querySelectorAll('.inspectable').forEach(el => el.classList.remove('pulse'));
+            if (pulseTimeout) clearTimeout(pulseTimeout);
+            // Add pulse after 5 seconds
+            pulseTimeout = setTimeout(() => {
+                document.querySelectorAll('.inspectable').forEach(el => el.classList.add('pulse'));
+            }, 5000);
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.hasAttribute('data-inspect')) {
+                const inspectType = e.target.getAttribute('data-inspect');
+                const email = emails[currentIndex];
+                let inspectionText = '';
+                if (inspectType === 'sender') {
+                    inspectionText = `Sender's email: ${email.sender.email}<br>Hint: ${email.sender.hint}`;
+                } else if (inspectType.startsWith('link-')) {
+                    const linkIndex = parseInt(inspectType.split('-')[1]);
+                    const link = email.links[linkIndex];
+                    inspectionText = `Link URL: ${link.url}<br>Hint: ${link.hint}`;
+                } else if (inspectType.startsWith('attachment-')) {
+                    const attIndex = parseInt(inspectType.split('-')[1]);
+                    const att = email.attachments[attIndex];
+                    inspectionText = `Attachment: ${att.name} (${att.type})<br>Hint: ${att.hint}`;
+                }
+                document.getElementById('inspection-area').innerHTML = inspectionText;
+                document.querySelectorAll('.inspectable').forEach(el => el.classList.remove('pulse'));
+            }
+        });
+
+        function checkAnswer(isPhishing) {
+            const email = emails[currentIndex];
+            const correct = (isPhishing === email.isPhishing);
+            if (correct) score++;
+            const feedbackDiv = document.getElementById('feedback');
+            feedbackDiv.innerHTML = `<p>${correct ? 'Correct!' : 'Incorrect.'}</p>`;
+            feedbackDiv.innerHTML += `<p>${email.explanations.overall}</p>`;
+            feedbackDiv.innerHTML += `<p>Sender: ${email.explanations.sender}</p>`;
+            if (email.links.length > 0) {
+                feedbackDiv.innerHTML += `<p>Link: ${email.explanations.links}</p>`;
+            }
+            if (email.attachments.length > 0) {
+                feedbackDiv.innerHTML += `<p>Attachment: ${email.explanations.attachments}</p>`;
+            }
+            feedbackDiv.style.display = 'block';
+            document.getElementById('phishing-btn').disabled = true;
+            document.getElementById('legitimate-btn').disabled = true;
+            if (currentIndex < emails.length - 1) {
+                const nextBtn = document.createElement('button');
+                nextBtn.textContent = 'Next';
+                nextBtn.onclick = function() {
+                    currentIndex++;
+                    loadEmail(currentIndex);
+                };
+                feedbackDiv.appendChild(nextBtn);
+            } else {
+                feedbackDiv.innerHTML += `<p>Your final score is ${score} out of ${emails.length}.</p>`;
+            }
+        }
+
+        document.getElementById('phishing-btn').onclick = function() {
+            checkAnswer(true);
+        };
+        document.getElementById('legitimate-btn').onclick = function() {
+            checkAnswer(false);
+        };
+
+        loadEmail(0);
+    </script>
+</body>
+</html>

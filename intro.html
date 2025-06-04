@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spot the Phishing - Introduction</title>
+    <style>
+        :root {
+            --ms-blue: #0078d4;
+            --ms-blue-dark: #005a9e;
+            --ms-gray-light: #f3f2f1;
+            --ms-gray: #d1d1d1;
+            --ms-white: #ffffff;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--ms-gray-light);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        #intro-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--ms-white);
+            border: 1px solid var(--ms-gray);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #intro-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--ms-blue), #2b88d8);
+        }
+
+        h1 {
+            color: var(--ms-blue);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 600;
+        }
+
+        .section {
+            margin-bottom: 35px;
+            padding: 20px;
+            background: var(--ms-white);
+            border-radius: 6px;
+            border: 1px solid var(--ms-gray);
+            transition: transform 0.2s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .section h2 {
+            color: var(--ms-blue);
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2::before {
+            content: '';
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .section:nth-child(1) h2::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230078d4'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E");
+        }
+
+        .section:nth-child(2) h2::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230078d4'%3E%3Cpath d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z'/%3E%3C/svg%3E");
+        }
+
+        .section:nth-child(3) h2::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230078d4'%3E%3Cpath d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z'/%3E%3C/svg%3E");
+        }
+
+        .demo-box {
+            background-color: var(--ms-gray-light);
+            border: 1px solid var(--ms-gray);
+            border-radius: 6px;
+            padding: 25px;
+            margin: 15px 0;
+        }
+
+        .demo-box h3 {
+            color: var(--ms-blue);
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+
+        .start-button {
+            display: block;
+            width: 220px;
+            margin: 40px auto;
+            padding: 16px 32px;
+            background-color: var(--ms-blue);
+            color: var(--ms-white);
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .start-button:hover {
+            background-color: var(--ms-blue-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .feature-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feature-list li {
+            margin-bottom: 12px;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.1em;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            color: var(--ms-blue);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            #intro-container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="intro-container">
+        <h1>Welcome to Spot the Phishing</h1>
+        
+        <div class="section">
+            <h2>About This Quiz</h2>
+            <p>This interactive quiz will help you learn how to identify phishing emails. You'll be presented with various email scenarios and asked to determine if they're legitimate or phishing attempts.</p>
+        </div>
+
+        <div class="section">
+            <h2>How to Play</h2>
+            <ul class="feature-list">
+                <li>You'll see emails that look like they're from Microsoft Outlook</li>
+                <li>Click on underlined elements to inspect them for suspicious details</li>
+                <li>Look for clues in sender addresses, links, and attachments</li>
+                <li>Choose "Phishing" or "Legitimate" for each email</li>
+                <li>Get immediate feedback and explanations for your choices</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>What to Look For</h2>
+            <div class="demo-box">
+                <h3>Common Phishing Signs:</h3>
+                <ul class="feature-list">
+                    <li>Suspicious sender email addresses (e.g., micros0ft.com instead of microsoft.com)</li>
+                    <li>Urgent or threatening language</li>
+                    <li>Unexpected attachments, especially .exe files</li>
+                    <li>Links that don't match the sender's domain</li>
+                    <li>Requests for personal information or account verification</li>
+                </ul>
+            </div>
+        </div>
+
+        <a href="phishing or not.html" class="start-button">Start Quiz</a>
+    </div>
+</body>
+</html> 
