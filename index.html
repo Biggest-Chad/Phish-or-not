@@ -155,6 +155,46 @@
             font-weight: bold;
         }
 
+        #footer-banner {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            background-color: var(--ms-gray-light);
+            border-top: 1px solid var(--ms-gray);
+        }
+
+        #footer-banner .created-by {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        #footer-banner .contact-text {
+            margin-top: 15px;
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        #footer-banner .contact-link {
+            color: var(--ms-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        #footer-banner .contact-link:hover {
+            color: var(--ms-blue-dark);
+            text-decoration: underline;
+        }
+
+        #footer-banner img {
+            width: 283px;
+            height: 92px;
+            margin: 10px auto;
+        }
+
         @media (max-width: 600px) {
             #intro-container {
                 padding: 20px;
@@ -203,6 +243,12 @@
         </div>
 
         <a href="phishing or not.html" class="start-button">Start Quiz</a>
+    </div>
+
+    <div id="footer-banner">
+        <div class="created-by">Created by:</div>
+        <img src="https://skywavetechnologies.com/wp-content/uploads/2015/12/swt-logo.png" alt="Skywave Technologies Logo">
+        <div class="contact-text">Like what you see? <a href="https://skywavetechnologies.com/contact/" class="contact-link">Contact us.</a></div>
     </div>
 </body>
 </html> 
