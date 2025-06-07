@@ -34,6 +34,59 @@
             overflow: hidden;
         }
 
+        #question-counter {
+            background-color: var(--ms-blue);
+            color: white;
+            padding: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        #show-score-btn {
+            display: none;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--ms-blue);
+            color: white;
+            border: none;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #show-score-btn:hover {
+            background-color: var(--ms-blue-dark);
+        }
+
+        #score-modal .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        #score-modal button {
+            background-color: var(--ms-blue);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        #score-modal button.hide-btn {
+            background-color: #666;
+        }
+
+        #score-modal button.hide-btn:hover {
+            background-color: #555;
+        }
+
         #app::before {
             content: '';
             position: absolute;
@@ -46,6 +99,26 @@
 
         #email-container {
             padding: 10px 10px 0 10px;
+        }
+
+        #context-box {
+            background-color: rgba(255, 255, 220, 0.95);
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            font-size: 0.95em;
+            color: #555;
+            border-left: 4px solid var(--ms-blue);
+            line-height: 1.4;
+        }
+
+        #context-box .header {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         #email-header {
@@ -118,7 +191,7 @@
         #inspection-area {
             margin: 10px;
             padding: 10px;
-            background-color: var(--ms-gray-light);
+            background-color: rgba(255, 255, 220, 0.95);
             border: 1px solid var(--ms-gray);
             border-radius: 6px;
             min-height: 40px;
@@ -194,6 +267,65 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
+        #score-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            text-align: center;
+            z-index: 1000;
+            min-width: 300px;
+            border: 2px solid var(--ms-blue);
+        }
+
+        #score-modal h2 {
+            color: var(--ms-blue);
+            margin: 0 0 20px 0;
+            font-size: 1.8em;
+        }
+
+        #score-modal .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #333;
+            margin: 20px 0;
+            animation: scorePulse 2s infinite;
+        }
+
+        @keyframes scorePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        #score-modal .message {
+            font-size: 1.2em;
+            color: #666;
+            margin: 20px 0;
+        }
+
+        #score-modal button {
+            background-color: var(--ms-blue);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #score-modal button:hover {
+            background-color: var(--ms-blue-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
         .inspectable {
             color: var(--ms-blue);
             text-decoration: underline;
@@ -202,11 +334,36 @@
             padding: 2px 4px;
             border-radius: 3px;
             font-size: 1em;
+            position: relative;
         }
 
         .inspectable:hover {
             color: var(--ms-blue-dark);
             background-color: rgba(0,120,212,0.1);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes point {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .inspectable.pulse::before {
+            content: "👆";
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2em;
+            animation: bounce 1s infinite, point 1s infinite;
+            pointer-events: none;
+            z-index: 1000;
         }
 
         @media (max-width: 600px) {
@@ -246,7 +403,12 @@
 </head>
 <body>
     <div id="app">
+        <div id="question-counter">Email 1 of 5</div>
         <div id="email-container">
+            <div id="context-box">
+                <div class="header">Email Context:</div>
+                <div class="content"></div>
+            </div>
             <div id="email-header">
                 <div class="avatar"></div>
                 <div class="header-info">
@@ -263,11 +425,22 @@
             <button id="legitimate-btn">Legitimate</button>
         </div>
         <div id="feedback" style="display:none;"></div>
+        <button id="show-score-btn">Show Score</button>
+    </div>
+    <div id="score-modal">
+        <h2>Quiz Complete!</h2>
+        <div class="score"></div>
+        <div class="message"></div>
+        <div class="modal-buttons">
+            <button onclick="location.reload()">Try Again</button>
+            <button class="hide-btn" onclick="document.getElementById('score-modal').style.display = 'none'">Hide</button>
+        </div>
     </div>
 
     <script>
         const emails = [
             {
+                context: "You have a Microsoft account, but you haven't signed in recently.",
                 sender: { name: "Microsoft Support", email: "support@micros0ft.com", hint: "Does the domain match Microsoft's official domain?" },
                 subject: "Urgent: Verify Your Account",
                 date: "2023-10-01",
@@ -284,6 +457,7 @@
                 }
             },
             {
+                context: "You had a meeting with Jane Smith this morning, she said that she would send notes later today",
                 sender: { name: "Jane Smith", email: "jane.smith@yourcompany.com", hint: "Is this a known colleague?" },
                 subject: "Meeting Notes",
                 date: "2023-10-02",
@@ -298,6 +472,7 @@
                 }
             },
             {
+                context: "You don't normally get emails from IT support like this",
                 sender: { name: "IT Support", email: "support@yourcompany.co", hint: "Does the domain match your company's?" },
                 subject: "Password Reset Required",
                 date: "2023-10-03",
@@ -314,6 +489,7 @@
                 }
             },
             {
+                context: "Your company's annual picnic was announced in the last all-hands meeting.",
                 sender: { name: "HR Department", email: "hr@yourcompany.com", hint: "Is this the official HR email?" },
                 subject: "Company Picnic This Weekend",
                 date: "2023-10-04",
@@ -327,7 +503,8 @@
                 }
             },
             {
-                sender: { name: "Unknown Sender", email: "unknown@example.com", hint: "Do you recognize this sender?" },
+                context: "You don't have any pending invoices or payments expected from unknown sources.",
+                sender: { name: "Asia Imports Billing", email: "asia-imports-billing@gmail.com", hint: "Do you recognize this sender?" },
                 subject: "Invoice Attached",
                 date: "2023-10-05",
                 body: "Please find the invoice attached. Pay immediately to avoid penalties.",
@@ -335,19 +512,118 @@
                 attachments: [{ name: "invoice.exe", type: "exe", hint: "Be cautious with executable files." }],
                 isPhishing: true,
                 explanations: {
-                    sender: "The sender is unknown and uses a generic email domain, not associated with any trusted entity.",
+                    sender: "The sender is unknown and uses a generic gmail address, not associated with any trusted entity.",
                     attachments: "The attachment is an executable file (.exe), which is highly suspicious and often used to deliver malware.",
                     overall: "This email is a phishing attempt or malware distribution, leveraging an urgent call to action and a dangerous attachment."
                 }
+            },
+            {
+                context: "You applied for a job 2 months ago, but didn't hear anything back.",
+                sender: { name: "TechCorp.com HR", email: "hr@techcorp-careers.com", hint: "Is this the official TechCorp domain?" },
+                subject: "Job Application Status Update",
+                date: "2023-10-06",
+                body: "Congratulations from TechCorp.com! We would like to proceed with your application. Please complete the attached form and provide your personal details: <span class='inspectable' data-inspect='link-0'>Application Form</span>",
+                links: [
+                    { display: "Application Form", url: "http://techcorp-hiring.com/form", hint: "Is this the official TechCorp.com careers website?" }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'techcorp-careers.com' is suspicious. TechCorp would use their official domain 'techcorp.com'.",
+                    links: "The link points to an external site not associated with TechCorp's official website.",
+                    overall: "This is likely a phishing attempt targeting job seekers, trying to collect personal information through a fake application process."
+                }
+            },
+            {
+                context: "You're expecting a package delivery from Lazada today.",
+                sender: { name: "Amazon Delivery", email: "delivery@lazada.co.th", hint: "Is this the official Lazada domain?" },
+                subject: "Your Package Delivery Update",
+                date: "2025-10-07",
+                body: "Your package is out for delivery. Track your delivery here: <span class='inspectable' data-inspect='link-0'>Track Package</span>",
+                links: [
+                    { display: "Track Package", url: "https://lazada.co.th/track/123456", hint: "Is this the official Lazada website URL?" }
+                ],
+                attachments: [],
+                isPhishing: false,
+                explanations: {
+                    sender: "The sender uses the official Lazada domain, which is correct for delivery notifications.",
+                    links: "The link points to the legitimate Lazada tracking page with a proper tracking number format.",
+                    overall: "This is a legitimate delivery notification from Lazada with appropriate links and sender information."
+                }
+            },
+            {
+                context: "You use online banking service with Kasikorn Bank, but you haven't seen an email like this before.",
+                sender: { name: "Security Alert", email: "security@bank-secure.net", hint: "Does this match your bank's official domain?" },
+                subject: "Suspicious Activity Detected",
+                date: "2023-10-08",
+                body: "We detected unusual activity on your account. Click here to verify your identity: <span class='inspectable' data-inspect='link-0'>Verify Account</span>",
+                links: [
+                    { display: "Verify Account", url: "http://bank-secure.net/verify", hint: "Is this your bank's official security page?" }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'bank-secure.net' is suspicious. Banks like Kasikorn Bank use their official domains for security communications.",
+                    links: "The link points to an external site not associated with Kasikorn Bank's official security page.",
+                    overall: "This is a phishing attempt trying to steal banking credentials by creating a false sense of urgency."
+                }
+            },
+            {
+                context: "Your company's IT team will sometimes send out security bulletins",
+                sender: { name: "Security Team", email: "security@yourcompany-com.info", hint: "Is this the official security team email?" },
+                subject: "Monthly Security Update",
+                date: "2025-10-09",
+                body: "Please review the attached security bulletin for this month's updates and recommendations.",
+                links: [],
+                attachments: [{ name: "security_bulletin.exe", type: "exe", hint: "Is this an expected document? Is .exe a valid document type?" }],
+                isPhishing: true,
+                explanations: {
+                    sender: "The sender uses the email domain 'yourcompany-com.info' which is attempting to copy the official company domain 'yourcompany.com'",
+                    attachments: "The attachment is a .exe executable file, not a document.",
+                    overall: "This is a phishing attempt to trick you into opening a potentially malicious file (virus)."
+                }
+            },
+            {
+                context: "You recently posted a job listing on a professional networking site.",
+                sender: { name: "LinkedIn Jobs", email: "jobs@linkedin-professional.com", hint: "Is this the official LinkedIn domain?" },
+                subject: "New Job Application Received",
+                date: "2023-10-10",
+                body: "You have received a new job application. Click here to view the candidate's profile: <span class='inspectable' data-inspect='link-0'>View Profile</span>",
+                links: [
+                    { display: "View Profile", url: "http://linkedin-professional.com/profile", hint: "Is this the official LinkedIn jobs platform?" }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'linkedin-professional.com' is fake. LinkedIn uses 'linkedin.com' for all communications.",
+                    links: "The link points to an external site not associated with LinkedIn's official platform.",
+                    overall: "This is a phishing attempt targeting recruiters, trying to steal LinkedIn credentials."
+                }
             }
         ];
+
+        // Function to shuffle array using Fisher-Yates algorithm
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Select 5 random emails
+        const selectedEmails = shuffleArray([...emails]).slice(0, 5);
 
         let currentIndex = 0;
         let score = 0;
         let pulseTimeout;
 
         function loadEmail(index) {
-            const email = emails[index];
+            const email = selectedEmails[index];
+            // Update question counter
+            document.getElementById('question-counter').textContent = `Email ${index + 1} of ${selectedEmails.length}`;
+            // Set context
+            document.querySelector('#context-box .content').textContent = email.context;
             // Set avatar initials
             const initials = email.sender.name.split(' ').map(w => w[0]).join('').substring(0,2).toUpperCase();
             document.querySelector('#email-header .avatar').textContent = initials;
@@ -370,19 +646,21 @@
             document.getElementById('feedback').style.display = 'none';
             document.getElementById('phishing-btn').disabled = false;
             document.getElementById('legitimate-btn').disabled = false;
-            // Remove any previous pulse
-            document.querySelectorAll('.inspectable').forEach(el => el.classList.remove('pulse'));
+            // Remove any previous pulse and inspected classes
+            document.querySelectorAll('.inspectable').forEach(el => {
+                el.classList.remove('pulse', 'inspected');
+            });
             if (pulseTimeout) clearTimeout(pulseTimeout);
             // Add pulse after 5 seconds
             pulseTimeout = setTimeout(() => {
-                document.querySelectorAll('.inspectable').forEach(el => el.classList.add('pulse'));
+                document.querySelectorAll('.inspectable:not(.inspected)').forEach(el => el.classList.add('pulse'));
             }, 5000);
         }
 
         document.addEventListener('click', function(e) {
             if (e.target.hasAttribute('data-inspect')) {
                 const inspectType = e.target.getAttribute('data-inspect');
-                const email = emails[currentIndex];
+                const email = selectedEmails[currentIndex];
                 let inspectionText = '';
                 if (inspectType === 'sender') {
                     inspectionText = `Sender's email: ${email.sender.email}<br>Hint: ${email.sender.hint}`;
@@ -396,12 +674,15 @@
                     inspectionText = `Attachment: ${att.name} (${att.type})<br>Hint: ${att.hint}`;
                 }
                 document.getElementById('inspection-area').innerHTML = inspectionText;
-                document.querySelectorAll('.inspectable').forEach(el => el.classList.remove('pulse'));
+                // Only remove pulse from the clicked element
+                e.target.classList.remove('pulse');
+                // Add a class to mark this element as inspected
+                e.target.classList.add('inspected');
             }
         });
 
         function checkAnswer(isPhishing) {
-            const email = emails[currentIndex];
+            const email = selectedEmails[currentIndex];
             const correct = (isPhishing === email.isPhishing);
             if (correct) score++;
             const feedbackDiv = document.getElementById('feedback');
@@ -417,7 +698,7 @@
             feedbackDiv.style.display = 'block';
             document.getElementById('phishing-btn').disabled = true;
             document.getElementById('legitimate-btn').disabled = true;
-            if (currentIndex < emails.length - 1) {
+            if (currentIndex < selectedEmails.length - 1) {
                 const nextBtn = document.createElement('button');
                 nextBtn.textContent = 'Next';
                 nextBtn.onclick = function() {
@@ -426,9 +707,33 @@
                 };
                 feedbackDiv.appendChild(nextBtn);
             } else {
-                feedbackDiv.innerHTML += `<p>Your final score is ${score} out of ${emails.length}.</p>`;
+                // Show the "Show Score" button instead of automatically showing the modal
+                document.getElementById('show-score-btn').style.display = 'block';
             }
         }
+
+        // Add event listener for the show score button
+        document.getElementById('show-score-btn').addEventListener('click', function() {
+            const scoreModal = document.getElementById('score-modal');
+            const scoreDiv = scoreModal.querySelector('.score');
+            const messageDiv = scoreModal.querySelector('.message');
+            
+            scoreDiv.textContent = `${score}/${selectedEmails.length}`;
+            
+            // Add a message based on the score
+            const percentage = (score / selectedEmails.length) * 100;
+            if (percentage === 100) {
+                messageDiv.textContent = "Perfect score! You're a phishing detection expert!";
+            } else if (percentage >= 80) {
+                messageDiv.textContent = "Great job! You're very good at spotting phishing attempts!";
+            } else if (percentage >= 60) {
+                messageDiv.textContent = "Good effort! Keep practicing to improve your detection skills.";
+            } else {
+                messageDiv.textContent = "Keep practicing! Learning to spot phishing attempts takes time.";
+            }
+            
+            scoreModal.style.display = 'block';
+        });
 
         document.getElementById('phishing-btn').onclick = function() {
             checkAnswer(true);
