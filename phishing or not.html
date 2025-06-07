@@ -485,7 +485,24 @@
 
     <script>
         const emails = [
-            {
+        {
+                context: "You have a Microsoft account, but you haven't signed in recently.",
+                sender: { name: "Microsoft Support", email: "support@microsoft.com", hint: "Does the domain match Microsoft's official domain?" },
+                subject: "Urgent: Verify Your Account",
+                date: "2023-10-01",
+                body: "Dear user, we need to verify your account. Please click the link below to verify: <span class='inspectable' data-inspect='link-0'>Verify Now</span>",
+                links: [
+                    { display: "Verify Now", url: "http://login.microsoft.com/verify", hint: "Check if the URL is legitimate. Look for misspellings." }
+                ],
+                attachments: [],
+                isPhishing: false,
+                explanations: {
+                    sender: "The domain 'microsoft.com' seems to be a legitimate Microsoft domain.",
+                    links: "The link points to 'login.microsoft.com', which is Microsoft's official site.",
+                    overall: "This email is a legitimate Microsoft account verification email."
+                }
+            },  
+        {
                 context: "You have a Microsoft account, but you haven't signed in recently.",
                 sender: { name: "Microsoft Support", email: "support@micros0ft.com", hint: "Does the domain match Microsoft's official domain?" },
                 subject: "Urgent: Verify Your Account",
@@ -499,6 +516,91 @@
                 explanations: {
                     sender: "The domain 'micros0ft.com' uses a zero instead of an 'o'. Microsoft's official domain is 'microsoft.com'.",
                     links: "The link points to 'micros0ft-security.com', a fake domain mimicking Microsoft's official site.",
+                    overall: "This email is a phishing attempt using a fake sender domain and a suspicious link to steal your information."
+                }
+            },
+            {
+                context: "You have a Microsoft account, but you haven't signed in recently.",
+                sender: { name: "Microsoft Security", email: "security@m1crosoft.info", hint: "Does the domain match Microsoft's official domain?" },
+                subject: "Account Security Alert",
+                date: "2023-10-01",
+                body: "We detected unusual activity on your account. Please verify your identity: <span class='inspectable' data-inspect='link-0'>Verify Account</span>",
+                links: [
+                    { display: "Verify Account", url: "http://m1crosoft-verify.info/secure", hint: "Check if the URL is legitimate. Look for misspellings." }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'm1crosoft.info' uses a '1' instead of an 'i'. Microsoft's official domain is 'microsoft.com'.",
+                    links: "The link points to 'm1crosoft-verify.info', a fake domain mimicking Microsoft's official site.",
+                    overall: "This email is a phishing attempt using a fake sender domain and a suspicious link to steal your information."
+                }
+            },
+            {
+                context: "You have a Microsoft account, but you haven't signed in recently.",
+                sender: { name: "Microsoft Account Team", email: "accounts@microsft-secure.com", hint: "Does the domain match Microsoft's official domain?" },
+                subject: "Important: Account Verification Required",
+                date: "2023-10-01",
+                body: "Your account requires immediate verification. Click here to proceed: <span class='inspectable' data-inspect='link-0'>Verify Identity</span>",
+                links: [
+                    { display: "Verify Identity", url: "http://microsft-secure.com/validate", hint: "Check if the URL is legitimate. Look for misspellings." }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'microsft-secure.com' is missing an 'o'. Microsoft's official domain is 'microsoft.com'.",
+                    links: "The link points to 'microsft-secure.com', a fake domain mimicking Microsoft's official site.",
+                    overall: "This email is a phishing attempt using a fake sender domain and a suspicious link to steal your information."
+                }
+            },
+            {
+                context: "You have a Microsoft account, but you haven't signed in recently.",
+                sender: { name: "Microsoft Support", email: "support@microsoft-secure.net", hint: "Does the domain match Microsoft's official domain?" },
+                subject: "Security Verification Needed",
+                date: "2023-10-01",
+                body: "To ensure your account security, please verify your details: <span class='inspectable' data-inspect='link-0'>Secure Account</span>",
+                links: [
+                    { display: "Secure Account", url: "http://microsoft-secure.net/verify", hint: "Check if the URL is legitimate. Look for the domain extension." }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'microsoft-secure.net' uses '.net' instead of '.com'. Microsoft's official domain is 'microsoft.com'.",
+                    links: "The link points to 'microsoft-secure.net', a fake domain mimicking Microsoft's official site.",
+                    overall: "This email is a phishing attempt using a fake sender domain and a suspicious link to steal your information."
+                }
+            },
+            {
+                context: "You have a Microsoft account, but you haven't signed in recently.",
+                sender: { name: "Microsoft Account Services", email: "accounts@microsoft-verify.org", hint: "Does the domain match Microsoft's official domain?" },
+                subject: "Account Access Verification",
+                date: "2023-10-01",
+                body: "Your account access needs verification. Please click below: <span class='inspectable' data-inspect='link-0'>Verify Access</span>",
+                links: [
+                    { display: "Verify Access", url: "http://microsoft-verify.org/account", hint: "Check if the URL is legitimate. Look for the domain extension." }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'microsoft-verify.org' uses '.org' instead of '.com'. Microsoft's official domain is 'microsoft.com'.",
+                    links: "The link points to 'microsoft-verify.org', a fake domain mimicking Microsoft's official site.",
+                    overall: "This email is a phishing attempt using a fake sender domain and a suspicious link to steal your information."
+                }
+            },
+            {
+                context: "You have a Microsoft account, but you haven't signed in recently.",
+                sender: { name: "Microsoft Security Center", email: "security@microsoft-accounts.com", hint: "Does the domain match Microsoft's official domain?" },
+                subject: "Account Security Check",
+                date: "2023-10-01",
+                body: "A security check is required for your account. Please verify: <span class='inspectable' data-inspect='link-0'>Security Check</span>",
+                links: [
+                    { display: "Security Check", url: "http://microsoft-accounts.com/secure", hint: "Check if the URL is legitimate. Look for the domain structure." }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'microsoft-accounts.com' uses a subdomain structure not typical of Microsoft's official communications.",
+                    links: "The link points to 'microsoft-accounts.com', a fake domain mimicking Microsoft's official site.",
                     overall: "This email is a phishing attempt using a fake sender domain and a suspicious link to steal your information."
                 }
             },
@@ -644,6 +746,363 @@
                     sender: "The domain 'linkedin-professional.com' is fake. LinkedIn uses 'linkedin.com' for all communications.",
                     links: "The link points to an external site not associated with LinkedIn's official platform.",
                     overall: "This is a phishing attempt targeting recruiters, trying to steal LinkedIn credentials."
+                }
+            },
+            {
+                context: "You have a Google account, but you haven't signed in recently.",
+                sender: { name: "Google Security", email: "security@gooogle.com", hint: "Does the domain match Google's official domain?" },
+                subject: "Security Alert: Unusual Activity",
+                date: "2023-10-01",
+                body: "We detected unusual activity on your Google account. Please verify your identity: <span class='inspectable' data-inspect='link-0'>Verify Account</span>",
+                links: [
+                    { display: "Verify Account", url: "http://gooogle-security.com/verify", hint: "Check if the URL is legitimate. Look for misspellings." }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'gooogle.com' has an extra 'o'. Google's official domain is 'google.com'.",
+                    links: "The link points to 'gooogle-security.com', a fake domain mimicking Google's official site.",
+                    overall: "This email is a phishing attempt using a fake sender domain and a suspicious link to steal your information."
+                }
+            },
+            {
+                context: "You have a Google account, but you haven't signed in recently.",
+                sender: { name: "Google Account Team", email: "accounts@g00gle.com", hint: "Does the domain match Google's official domain?" },
+                subject: "Account Access Verification",
+                date: "2023-10-01",
+                body: "Your Google account requires immediate verification. Click here to proceed: <span class='inspectable' data-inspect='link-0'>Verify Now</span>",
+                links: [
+                    { display: "Verify Now", url: "http://g00gle-verify.com/secure", hint: "Check if the URL is legitimate. Look for misspellings." }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'g00gle.com' uses zeros instead of 'o's. Google's official domain is 'google.com'.",
+                    links: "The link points to 'g00gle-verify.com', a fake domain mimicking Google's official site.",
+                    overall: "This email is a phishing attempt using a fake sender domain and a suspicious link to steal your information."
+                }
+            },
+            {
+                context: "You have a Google account, but you haven't signed in recently.",
+                sender: { name: "Google Support", email: "support@google-secure.net", hint: "Does the domain match Google's official domain?" },
+                subject: "Important: Account Security Check",
+                date: "2023-10-01",
+                body: "To ensure your account security, please verify your details: <span class='inspectable' data-inspect='link-0'>Security Check</span>",
+                links: [
+                    { display: "Security Check", url: "http://google-secure.net/verify", hint: "Check if the URL is legitimate. Look for the domain extension." }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'google-secure.net' uses '.net' instead of '.com'. Google's official domain is 'google.com'.",
+                    links: "The link points to 'google-secure.net', a fake domain mimicking Google's official site.",
+                    overall: "This email is a phishing attempt using a fake sender domain and a suspicious link to steal your information."
+                }
+            },
+            {
+                context: "You have a Google account, but you haven't signed in recently.",
+                sender: { name: "Google Account Services", email: "accounts@google-verify.org", hint: "Does the domain match Google's official domain?" },
+                subject: "Account Verification Required",
+                date: "2023-10-01",
+                body: "Your Google account needs verification. Please click below: <span class='inspectable' data-inspect='link-0'>Verify Access</span>",
+                links: [
+                    { display: "Verify Access", url: "http://google-verify.org/account", hint: "Check if the URL is legitimate. Look for the domain extension." }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'google-verify.org' uses '.org' instead of '.com'. Google's official domain is 'google.com'.",
+                    links: "The link points to 'google-verify.org', a fake domain mimicking Google's official site.",
+                    overall: "This email is a phishing attempt using a fake sender domain and a suspicious link to steal your information."
+                }
+            },
+            {
+                context: "You have a Google account, but you haven't signed in recently.",
+                sender: { name: "Google Security Center", email: "security@google-accounts.com", hint: "Does the domain match Google's official domain?" },
+                subject: "Security Verification Alert",
+                date: "2023-10-01",
+                body: "A security verification is required for your account. Please verify: <span class='inspectable' data-inspect='link-0'>Verify Security</span>",
+                links: [
+                    { display: "Verify Security", url: "http://google-accounts.com/secure", hint: "Check if the URL is legitimate. Look for the domain structure." }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'google-accounts.com' uses a subdomain structure not typical of Google's official communications.",
+                    links: "The link points to 'google-accounts.com', a fake domain mimicking Google's official site.",
+                    overall: "This email is a phishing attempt using a fake sender domain and a suspicious link to steal your information."
+                }
+            },
+            {
+                context: "You have a Google account, but you haven't signed in recently.",
+                sender: { name: "Google Security Center", email: "security@google.com", hint: "Does the domain match Google's official domain?" },
+                subject: "Security Verification Alert",
+                date: "2023-10-01",
+                body: "A security verification is required for your account. Please verify: <span class='inspectable' data-inspect='link-0'>Verify Security</span>",
+                links: [
+                    { display: "Verify Security", url: "http://google.com/secure", hint: "Check if the URL is legitimate. Look for the domain structure." }
+                ],
+                attachments: [],
+                isPhishing: false,
+                explanations: {
+                    sender: "The domain 'google.com' is the correct official domain for Google.",
+                    links: "The link points to 'google.com', the official Google website.",
+                    overall: "This email is a legitimate security verification from Google."
+                }
+            },
+            {
+                context: "You have a Bangkok Bank account and recently made an online transaction.",
+                sender: { name: "Bangkok Bank", email: "security@bangkokbank-secure.com", hint: "Is this the official Bangkok Bank domain?" },
+                subject: "Transaction Alert",
+                date: "2023-10-01",
+                body: "We detected a transaction on your account. Please verify: <span class='inspectable' data-inspect='link-0'>Verify Transaction</span>",
+                links: [
+                    { display: "Verify Transaction", url: "http://bangkokbank-secure.com/verify", hint: "Is this the official Bangkok Bank security page?" }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'bangkokbank-secure.com' is not the official Bangkok Bank domain (should be bangkokbank.com).",
+                    links: "The link points to an external site not associated with Bangkok Bank's official security page.",
+                    overall: "This is a phishing attempt trying to steal banking credentials by creating a false sense of urgency."
+                }
+            },
+            {
+                context: "You recently booked a hotel in Phuket through Agoda.",
+                sender: { name: "Agoda Support", email: "support@agoda-booking.com", hint: "Is this the official Agoda domain?" },
+                subject: "Booking Confirmation Required",
+                date: "2023-10-01",
+                body: "Please confirm your hotel booking details: <span class='inspectable' data-inspect='link-0'>View Booking</span>",
+                links: [
+                    { display: "View Booking", url: "http://agoda-booking.com/confirm", hint: "Is this the official Agoda booking page?" }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'agoda-booking.com' is not the official Agoda domain (should be agoda.com).",
+                    links: "The link points to an external site not associated with Agoda's official platform.",
+                    overall: "This is a phishing attempt trying to steal booking information and potentially payment details."
+                }
+            },
+            {
+                context: "You're expecting a package delivery from Kerry Express.",
+                sender: { name: "Kerry Express", email: "tracking@kerryexpress.com", hint: "Is this the official Kerry Express domain?" },
+                subject: "Package Delivery Update",
+                date: "2023-10-01",
+                body: "Your package is out for delivery. Track it here: <span class='inspectable' data-inspect='link-0'>Track Package</span>",
+                links: [
+                    { display: "Track Package", url: "https://th.kerryexpress.com/track/KE123456", hint: "Is this the official Kerry Express tracking URL?" }
+                ],
+                attachments: [],
+                isPhishing: false,
+                explanations: {
+                    sender: "The domain 'kerryexpress.com' is the official Kerry Express domain.",
+                    links: "The link points to the official Kerry Express tracking page with a proper tracking number format.",
+                    overall: "This is a legitimate delivery notification from Kerry Express."
+                }
+            },
+            {
+                context: "You recently applied for a job at Central Group.",
+                sender: { name: "Central Group HR", email: "hr@central-group.co.th", hint: "Is this the official Central Group domain?" },
+                subject: "Job Application Status",
+                date: "2023-10-01",
+                body: "Thank you for your application. Please complete the attached form: <span class='inspectable' data-inspect='attachment-0'>Application Form</span>",
+                links: [],
+                attachments: [
+                    { name: "application_form.exe", type: "exe", hint: "Is this a safe file type for a job application?" }
+                ],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'central-group.co.th' is not the official Central Group domain.",
+                    attachments: "The attachment is an executable file (.exe), which is highly suspicious and often used to deliver malware.",
+                    overall: "This is a phishing attempt trying to deliver malware through a fake job application process."
+                }
+            },
+            {
+                context: "You have a True Move H mobile account.",
+                sender: { name: "True Move H", email: "service@true.th", hint: "Is this the official True Move H domain?" },
+                subject: "Bill Payment Reminder",
+                date: "2023-10-01",
+                body: "Your monthly bill is ready. View and pay here: <span class='inspectable' data-inspect='link-0'>Pay Bill</span>",
+                links: [
+                    { display: "Pay Bill", url: "https://www.true.th/bill", hint: "Is this the official True Move H payment page?" }
+                ],
+                attachments: [],
+                isPhishing: false,
+                explanations: {
+                    sender: "The domain 'true.th' is the official True Move H domain.",
+                    links: "The link points to the official True website.",
+                    overall: "This is a legitimate bill payment reminder from True Move H."
+                }
+            },
+            {
+                context: "You recently purchased items from Lazada Thailand.",
+                sender: { name: "Lazada Support", email: "support@lazada-secure.com", hint: "Is this the official Lazada domain?" },
+                subject: "Order Verification Required",
+                date: "2023-10-01",
+                body: "Please verify your recent order details: <span class='inspectable' data-inspect='link-0'>Verify Order</span>",
+                links: [
+                    { display: "Verify Order", url: "http://lazada-secure.com/verify", hint: "Is this the official Lazada verification page?" }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'lazada-secure.com' is not the official Lazada domain (should be lazada.co.th).",
+                    links: "The link points to an external site not associated with Lazada's official platform.",
+                    overall: "This is a phishing attempt trying to steal Lazada account credentials."
+                }
+            },
+            {
+                context: "You have a SCB (Siam Commercial Bank) account.",
+                sender: { name: "SCB Security", email: "security@scb.co.th", hint: "Is this the official SCB domain?" },
+                subject: "Security Update Required",
+                date: "2023-10-01",
+                body: "Please update your security settings: <span class='inspectable' data-inspect='link-0'>Update Security</span>",
+                links: [
+                    { display: "Update Security", url: "https://www.scb.co.th/security", hint: "Is this the official SCB security page?" }
+                ],
+                attachments: [],
+                isPhishing: false,
+                explanations: {
+                    sender: "The domain 'scb.co.th' is the official Siam Commercial Bank domain.",
+                    links: "The link points to the official SCB security settings page.",
+                    overall: "This is a legitimate security update request from SCB."
+                }
+            },
+            {
+                context: "You recently booked a flight with Thai Airways.",
+                sender: { name: "Thai Airways", email: "booking@thaiairways.com", hint: "Is this the official Thai Airways domain?" },
+                subject: "Flight Itinerary",
+                date: "2023-10-01",
+                body: "Your flight itinerary is attached. Please review: <span class='inspectable' data-inspect='attachment-0'>Itinerary.pdf</span>",
+                links: [],
+                attachments: [
+                    { name: "itinerary.pdf", type: "pdf", hint: "Is this an expected file type for a flight itinerary?" }
+                ],
+                isPhishing: false,
+                explanations: {
+                    sender: "The domain 'thaiairways.com' is the official Thai Airways domain.",
+                    attachments: "The attachment is a PDF file, which is a standard format for flight itineraries.",
+                    overall: "This is a legitimate flight itinerary email from Thai Airways."
+                }
+            },
+            {
+                context: "You have a LINE Pay account linked to your bank.",
+                sender: { name: "LINE Pay", email: "security@line-pay-secure.com", hint: "Is this the official LINE Pay domain?" },
+                subject: "Account Security Alert",
+                date: "2023-10-01",
+                body: "Unusual activity detected. Verify your account: <span class='inspectable' data-inspect='link-0'>Verify Account</span>",
+                links: [
+                    { display: "Verify Account", url: "http://line-pay-secure.com/verify", hint: "Is this the official LINE Pay security page?" }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'line-pay-secure.com' is not the official LINE Pay domain.",
+                    links: "The link points to an external site not associated with LINE Pay's official security page.",
+                    overall: "This is a phishing attempt trying to steal LINE Pay account credentials."
+                }
+            },
+            {
+                context: "You recently ordered from Grab Food.",
+                sender: { name: "Grab Food", email: "support@grab.com", hint: "Is this the official Grab domain?" },
+                subject: "Order Confirmation",
+                date: "2023-10-01",
+                body: "Your order has been confirmed. Track it here: <span class='inspectable' data-inspect='link-0'>Track Order</span>",
+                links: [
+                    { display: "Track Order", url: "https://food.grab.com/track/GR123456", hint: "Is this the official Grab Food tracking URL?" }
+                ],
+                attachments: [],
+                isPhishing: false,
+                explanations: {
+                    sender: "The domain 'grab.com' is the official Grab domain.",
+                    links: "The link points to the official Grab Food tracking page with a proper order number format.",
+                    overall: "This is a legitimate order confirmation from Grab Food."
+                }
+            },
+            {
+                context: "You have a TMB Bank account.",
+                sender: { name: "TMB Bank", email: "security@tmb-bank-secure.com", hint: "Is this the official TMB Bank domain?" },
+                subject: "Account Verification Required",
+                date: "2023-10-01",
+                body: "Please verify your account details: <span class='inspectable' data-inspect='link-0'>Verify Account</span>",
+                links: [
+                    { display: "Verify Account", url: "http://tmb-bank-secure.com/verify", hint: "Is this the official TMB Bank verification page?" }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'tmb-bank-secure.com' is not the official TMB Bank domain (should be tmb.co.th).",
+                    links: "The link points to an external site not associated with TMB Bank's official website.",
+                    overall: "This is a phishing attempt trying to steal banking credentials."
+                }
+            },
+            {
+                context: "You recently booked a hotel through Booking.com.",
+                sender: { name: "Booking.com", email: "support@booking.com", hint: "Is this the official Booking.com domain?" },
+                subject: "Booking Confirmation",
+                date: "2023-10-01",
+                body: "Your hotel booking is confirmed. View details here: <span class='inspectable' data-inspect='link-0'>View Booking</span>",
+                links: [
+                    { display: "View Booking", url: "https://www.booking.com/confirmation/BK123456", hint: "Is this the official Booking.com confirmation page?" }
+                ],
+                attachments: [],
+                isPhishing: false,
+                explanations: {
+                    sender: "The domain 'booking.com' is the official Booking.com domain.",
+                    links: "The link points to the official Booking.com confirmation page with a proper booking number format.",
+                    overall: "This is a legitimate booking confirmation from Booking.com."
+                }
+            },
+            {
+                context: "You have a DTAC mobile account.",
+                sender: { name: "DTAC Support", email: "support@dtac-secure.com", hint: "Is this the official DTAC domain?" },
+                subject: "Account Security Update",
+                date: "2023-10-01",
+                body: "Please update your security settings: <span class='inspectable' data-inspect='link-0'>Update Security</span>",
+                links: [
+                    { display: "Update Security", url: "http://dtac-secure.com/update", hint: "Is this the official DTAC security page?" }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'dtac-secure.com' is not the official DTAC domain (should be dtac.co.th).",
+                    links: "The link points to an external site not associated with DTAC's official website.",
+                    overall: "This is a phishing attempt trying to steal DTAC account credentials."
+                }
+            },
+            {
+                context: "You recently ordered from Central Online.",
+                sender: { name: "Central Online", email: "support@central-online-secure.com", hint: "Is this the official Central Online domain?" },
+                subject: "Order Verification Required",
+                date: "2023-10-01",
+                body: "Please verify your order details: <span class='inspectable' data-inspect='link-0'>Verify Order</span>",
+                links: [
+                    { display: "Verify Order", url: "http://central-online-secure.com/verify", hint: "Is this the official Central Online verification page?" }
+                ],
+                attachments: [],
+                isPhishing: true,
+                explanations: {
+                    sender: "The domain 'central-online-secure.com' is not the official Central Online domain.",
+                    links: "The link points to an external site not associated with Central Online's official platform.",
+                    overall: "This is a phishing attempt trying to steal Central Online account credentials."
+                }
+            },
+            {
+                context: "You have a BTS Skytrain Rabbit Card.",
+                sender: { name: "BTS Skytrain", email: "support@bts.co.th", hint: "Is this the official BTS domain?" },
+                subject: "Card Balance Update",
+                date: "2023-10-01",
+                body: "Your Rabbit Card balance is low. Top up here: <span class='inspectable' data-inspect='link-0'>Top Up</span>",
+                links: [
+                    { display: "Top Up", url: "https://www.bts.co.th/topup", hint: "Is this the official BTS top-up page?" }
+                ],
+                attachments: [],
+                isPhishing: false,
+                explanations: {
+                    sender: "The domain 'bts.co.th' is the official BTS Skytrain domain.",
+                    links: "The link points to the official BTS top-up page.",
+                    overall: "This is a legitimate balance update notification from BTS Skytrain."
                 }
             }
         ];
